@@ -22,8 +22,20 @@ class Person {
   let title, initial, first_name, last_name;
 
   const assignCouple = () => {
-    let splitName = name.split(" ");
-    console.log(splitName.filter(y => !y.match((/and(?!\w+?)|&/gi))));
+    const titles = name.match(/(dr|mr[s]?|miss)+?/gi);
+    let separatedCouples = [];
+
+    titles.forEach((title) => {
+      let splitName = name.split(" ");
+      let person = splitName.filter(y => !y.match(title));
+
+      
+    
+      console.log(person);
+      
+    });
+
+    //console.log(separatedCouples);
   };
 
   const assignSingle = () => {
@@ -37,8 +49,5 @@ class Person {
     //making an assumption that the surname will absolutely be last in the string; this may be dangerous in larger datasets and/or where there is an unregulated input (i.e., genuine user values), but suffices within the scope of this challenge. same assumption applies to the titles (in that they will always be at the start).
   };
 
-  assignCouple();
-
   //console.log(new Person(title, initial, first_name, last_name));
-
 });
