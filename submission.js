@@ -22,8 +22,8 @@ class Person {
   let title, initial, first_name, last_name;
 
   const assignCouple = () => {
-    let splitName = [name.split(" ")];
-    splitName.filter(y => !y.match(/(and(?!\w+?)|&)/gi));
+    let splitName = name.split(" ");
+    console.log(splitName.filter(y => !y.match((/and(?!\w+?)|&/gi))));
   };
 
   const assignSingle = () => {
