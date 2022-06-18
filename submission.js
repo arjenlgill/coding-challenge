@@ -14,12 +14,15 @@ class Person{
         this.title = title,
         this.initial = initial,
         this.first_name = first_name,
-        this.last_name = last_name,
+        this.last_name = last_name
     }
 }
 
 [...names].forEach((name) => {
     
-    let title = name.filter(filter => filter.match(/^(dr)|(mr[s]?)|(miss)?\.?/ig) //only searching for singles for now
+    let title = name.match(/^(?<!.)(dr)|(mr[s]?)|(miss)\.?/ig);
+     //only searching for singles for now
+    
+    console.log(title);    
 
 })
