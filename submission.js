@@ -20,6 +20,6 @@ class Person{
 
 [...names].forEach((name) => {
     
-    let title = name.filter(filter => filter.match(/mr[\.]?/ig)
+    let title = name.filter(filter => filter.match(/^(dr)|(mr[s]?)|(miss)?\.?/ig) //only searching for singles for now
 
 })
