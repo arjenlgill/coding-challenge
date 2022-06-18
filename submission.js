@@ -8,4 +8,3 @@ const names = [
 ];
 
 let people = [];
-
