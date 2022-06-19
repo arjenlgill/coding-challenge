@@ -11,7 +11,7 @@ let people = [];
 
 class Person {
   constructor(title, initial, first_name, last_name) {
-    function convertToString(attribute) {
+    const convertToString = (attribute) => {
       return attribute ? attribute.toString().toUpperCase() : null;
     }
 
@@ -22,35 +22,36 @@ class Person {
   }
 }
 
+const coupleReg = /and(?!\w+?)|&/gi;
+const titleReg = /(dr|mr[s]?|miss)+?/gi;
+const initialReg = /(?<= )\w?(?=\. )/gi;
+const firstNameReg = /(?<= +?)(?!(and(?!\w+?)|&)|(dr)|(mr[s]?)|(miss))(\w(?!\.)){2,}(?= )/gi;
+const lastNameReg = /(?<= +?)\w+?$/gi;
+
 [...names].forEach((name) => {
   let title, initial, first_name, last_name;
 
-  function allocatePersonAttributes(name) {
-    title = name.match(/^(?<!.)(dr)|(mr[s]?)|(miss)\.?/gi);
-    //only searching for singles for now.
-    initial = name.match(/(?<= )\w?(?=\. )/gi);
-    //just doing a loose search; tighten up later.
-    first_name = name.match(/(?<= +?)(?!(and(?!\w+?)|&)|(dr)|(mr[s]?)|(miss))(\w(?!\.)){2,}(?= )/gi);
-    //making sure that surnames are at least 2 characters.
-    last_name = name.match(/(?<= +?)\w+?$/gi);
-    //making an assumption that the surname will absolutely be last in the string; this may be dangerous in larger datasets and/or where there is an unregulated input (i.e., genuine user values), but suffices within the scope of this challenge. same assumption applies to the titles (in that they will always be at the start).
+  const allocatePersonAttributes = (name) => {
+    title = name.match(titleReg);
+    initial = name.match(initialReg);
+    first_name = name.match(firstNameReg);  //making sure that surnames are at least 2 characters, to prevent conflict with initials.
+    last_name = name.match(lastNameReg); //making an assumption that the surname will absolutely be last in the string; this may be dangerous in larger datasets and/or where there is an unregulated input (i.e., genuine user values), but suffices within the scope of this challenge. same assumption applies to the titles (in that they will always be at the start).
 
     return people.push(new Person(title, initial, first_name, last_name));
   }
 
   const assignCouple = () => {
-    const titles = name.match(/(dr|mr[s]?|miss)+?/gi);
+    const titles = name.match(titleReg);
     let separatedCouples = [];
 
     titles.forEach((title) => {
-      const titleReg = new RegExp("^" + title + "$", "i");
+      const titlesReg = new RegExp("^" + title + "$", "i"); //this is needed here instead of titleReg because we need an exact match, and in 'mr & mrs' cases, the titleReg will match both and defeat the purpose of separation.
       const splitName = name.split(" ");
-      let person = splitName.filter((y) => !y.match(titleReg));
-      person = person.filter((y) => !y.match(/and(?!\w+?)|&/));
+      let person = splitName.filter((y) => !y.match(titlesReg));
+      person = person.filter((y) => !y.match(coupleReg));
       person = person.join(" ");
-      if (!title.match(/mrs|miss/gi)) {
-        person = person.replace(/(?<= +?)(?!(and(?!\w+?)|&)|(dr)|(mr[s]?)|(miss))(\w(?!\.)){2,}(?= \w+?)/gi, "");
-      }
+      title.match(/mrs|miss/gi) ? null : (person = person.replace(firstNameReg, ""));
+      
       separatedCouples.push(person);
     });
 
@@ -61,7 +62,7 @@ class Person {
     allocatePersonAttributes(name);
   };
 
-  name.match(/and(?!\w+?)|&/gi) ? assignCouple() : assignSingle();
+  name.match(coupleReg) ? assignCouple() : assignSingle();
 });
 
 console.log(people);
