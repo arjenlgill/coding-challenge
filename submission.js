@@ -35,7 +35,7 @@ const lastNameReg = /(?<= +?)\w+?$/gi;
     title = name.match(titleReg);
     initial = name.match(initialReg);
     first_name = name.match(firstNameReg);  //making sure that surnames are at least 2 characters, to prevent conflict with initials.
-    last_name = name.match(lastNameReg); //making an assumption that the surname will absolutely be last in the string; this may be dangerous in larger datasets and/or where there is an unregulated input (i.e., genuine user values), but suffices within the scope of this challenge. same assumption applies to the titles (in that they will always be at the start).
+    last_name = name.match(lastNameReg); //making an assumption that the surname will absolutely be last in the string; this may be dangerous in larger datasets and/or where there is an unregulated input (i.e., genuine user values), but suffices within the scope of this challenge.
 
     return people.push(new Person(title, initial, first_name, last_name));
   }
