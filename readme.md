@@ -1,2 +1,2 @@
-Codemakers Coding Challenge
+Coding Challenge
 
